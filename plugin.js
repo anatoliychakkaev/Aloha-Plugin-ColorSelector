@@ -23,8 +23,9 @@ GENTICS.Aloha.ColorSelector.config = {
  */
 GENTICS.Aloha.ColorSelector.init = function () {
 
-    var that = this,
-    style = jQuery('<style>' +
+    var that = this;
+    var scope = 'GENTICS.Aloha.continuoustext';
+    var style = jQuery('<style>' +
     '.GENTICS_button_text_color {background: url("/javascripts/aloha/deps/extjs/resources/images/default/editor/tb-sprite.gif") repeat scroll -160px 0 transparent !important}' +
     '.GENTICS_button_text_background {background: url("/javascripts/aloha/deps/extjs/resources/images/default/editor/tb-sprite.gif") repeat scroll -176px 0 transparent !important}' +
     '</style>');
@@ -78,6 +79,37 @@ GENTICS.Aloha.ColorSelector.init = function () {
         that.i18n("floatingmenu.tab.format"),
         1
     );
+
+    this.multiSplitItems = [];
+    jQuery.each(GENTICS.Aloha.ColorSelector.config.colors, function(index, value){
+        that.multiSplitItems.push({
+            'name' : value,
+            // 'tooltip' : that.i18n('button.' + button + '.tooltip'),
+            // 'iconClass' : 'GENTICS_button ' + that.i18n('GENTICS_button_' + button),
+            // 'markup' : jQuery('<'+button+'></'+button+'>'),
+            'click' : function() {
+                // now focus back to the active element
+                if (GENTICS.Aloha.activeEditable) {
+                    GENTICS.Aloha.activeEditable.obj[0].focus();
+                }
+                alert('a');
+            }
+        });
+    });
+
+    this.multiSplitButton = new GENTICS.Aloha.ui.MultiSplitButton({
+        'items' : this.multiSplitItems
+    });
+    GENTICS.Aloha.FloatingMenu.addButton(
+        scope,
+        this.multiSplitButton,
+        GENTICS.Aloha.i18n(GENTICS.Aloha, 'floatingmenu.tab.format'),
+        1
+    );
+    setTimeout(function () {
+        console.log(that.multiSplitButton.extButton.el.dom);
+    });
+
     function Layer () {
     }
 
