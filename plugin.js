@@ -83,11 +83,11 @@ GENTICS.Aloha.ColorSelector.init = function () {
     this.multiSplitItems = [];
     jQuery.each(GENTICS.Aloha.ColorSelector.config.colors, function(index, value){
         that.multiSplitItems.push({
-            'name' : value,
-            // 'tooltip' : that.i18n('button.' + button + '.tooltip'),
-            // 'iconClass' : 'GENTICS_button ' + that.i18n('GENTICS_button_' + button),
+            'tooltip' : value,
+            'iconClass' : 'GENTICS_button_' + value,
+            'size': 'small',
             // 'markup' : jQuery('<'+button+'></'+button+'>'),
-            'click' : function() {
+            'onclick' : function() {
                 // now focus back to the active element
                 if (GENTICS.Aloha.activeEditable) {
                     GENTICS.Aloha.activeEditable.obj[0].focus();
@@ -104,11 +104,12 @@ GENTICS.Aloha.ColorSelector.init = function () {
         scope,
         this.multiSplitButton,
         GENTICS.Aloha.i18n(GENTICS.Aloha, 'floatingmenu.tab.format'),
-        1
+        2
     );
     setTimeout(function () {
-        console.log(that.multiSplitButton.extButton.el.dom);
-    });
+        Layer.menu = jQuery(that.multiSplitButton.extButton.el.dom).parents('.x-toolbar-cell');
+        Layer.menu.hide();
+    }, 100);
 
     function Layer () {
     }
@@ -118,7 +119,9 @@ GENTICS.Aloha.ColorSelector.init = function () {
         var that = this;
         this.target = jQuery(target);
         var offset = this.target.offset();
-        this.el = jQuery('<div style="padding: 4px; position: absolute; background: #ddd; z-index: 11001"></div>');
+        jQuery('body').append(Layer.menu);
+        this.el = jQuery(Layer.menu);// jQuery('<div style="padding: 4px; position: absolute; background: #ddd; z-index: 11001"></div>');
+        this.el.css('position', 'absolute');
         this.el.css('top', offset.top + this.target.height());
         this.el.css('left', offset.left);
         this.populateColors(style);
